@@ -1,6 +1,6 @@
 # Discord Lookup API
 
-Este projeto foi migrado de Python para TypeScript e reorganizado em subpastas para facilitar manutenção, testes e evolução do código.
+Este projeto foi migrado para TypeScript e reorganizado em subpastas para facilitar manutenção, testes e evolução do código.
 
 ## Contexto
 
@@ -34,8 +34,6 @@ Discord-Lookup-API/
 ├─ package.json
 ├─ tsconfig.json
 ├─ README.md
-├─ main.py
-├─ requirements.txt
 └─ .env
 ```
 
@@ -83,22 +81,3 @@ A aplicação executa o fluxo abaixo:
 - monta uma prova (`proof`) em base64 em formato JSON
 - envia a requisição POST para o endpoint de lookup
 - imprime a resposta da API
-
-## Observações importantes
-
-- Use apenas IDs ou contas que você tenha autorização para consultar.
-- Este projeto é um exemplo técnico e pode ser usado apenas dentro das regras da plataforma e da sua própria operação.
-- O token do bot deve ser mantido em segredo e nunca compartilhado publicamente.
-
-## Histórico
-
-Este repositório começou em Python e foi migrado para TypeScript para:
-
-- remover a dependência do runtime Python
-- melhorar a organização em módulos
-- facilitar manutenção e escalabilidade
-- padronizar o projeto para uso moderno em Node.js
-
-## Licença
-
-Sem licença definida no projeto.
