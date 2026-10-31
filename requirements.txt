@@ -1,1 +1,9 @@
-requests
+# Deprecated file
+
+Este projeto foi migrado para TypeScript.
+
+Use o comando abaixo em vez de dependências Python:
+
+npm install
+
+Nenhuma dependência em Python é necessária para o funcionamento atual do projeto.

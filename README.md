@@ -1,28 +1,104 @@
-import { appConfig } from './config/env.js';
-import { fetchChallenge, solveChallenge } from './services/challenge.js';
-import { lookupDiscordUser } from './services/lookup.js';
+# Discord Lookup API
 
-async function main(): Promise<void> {
-  const { discordId, token } = appConfig;
+Este projeto foi migrado de Python para TypeScript e reorganizado em subpastas para facilitar manutenção, testes e evolução do código.
 
-  if (discordId === 'ID_here' || token === 'bot token here') {
-    console.warn(
-      'Configure DISCORD_ID and DISCORD_TOKEN in a .env file or edit env.ts before running the lookup.'
-    );
-    process.exit(1);
-  }
+## Contexto
 
-  const challenge = await fetchChallenge();
-  const start = Date.now();
-  const numberFound = solveChallenge(challenge.challenge, challenge.salt, challenge.maxNumber);
-  const elapsedMs = Date.now() - start;
+O objetivo original era consultar informações de um usuário do Discord utilizando a API pública de `discord.id`, resolvendo um desafio criptográfico e enviando um `proof` válido junto com o `discord_id` e o `token` do bot para a rota de lookup.
 
-  const result = await lookupDiscordUser(discordId, token, challenge, numberFound, elapsedMs);
+A lógica principal faz três coisas:
 
-  console.log(JSON.stringify(result, null, 2));
-}
+1. Busca o desafio no endpoint `https://backend.discord.id/challenge`
+2. Resolve o número relacionado ao desafio usando SHA-256 e o salt recebido
+3. Envia a prova gerada para `https://backend.discord.id/lookup`
 
-main().catch((error: unknown) => {
-  console.error('Unexpected error:', error);
-  process.exit(1);
-});
+Essa implementação foi reescrita em TypeScript para deixar o projeto mais modular, legível e fácil de expandir.
+
+## Estrutura do projeto
+
+```text
+Discord-Lookup-API/
+├─ src/
+│  ├─ config/
+│  │  └─ env.ts
+│  ├─ services/
+│  │  ├─ challenge.ts
+│  │  └─ lookup.ts
+│  ├─ types/
+│  │  └─ discord.ts
+│  ├─ utils/
+│  │  └─ crypto.ts
+│  └─ index.ts
+├─ .env.example
+├─ .gitignore
+├─ package.json
+├─ tsconfig.json
+├─ README.md
+├─ main.py
+├─ requirements.txt
+└─ .env
+```
+
+## Requisitos
+
+- Node.js 20+
+- npm
+
+## Instalação
+
+```bash
+npm install
+```
+
+## Configuração
+
+Crie um arquivo `.env` na raiz do projeto com os seguintes valores:
+
+```env
+DISCORD_ID=SEU_ID_DO_DISCORD
+DISCORD_TOKEN=SEU_TOKEN_DO_BOT
+```
+
+Também existe um exemplo pronto em `.env.example`.
+
+## Execução
+
+```bash
+npm run dev
+```
+
+Ou, para buildar e rodar em produção:
+
+```bash
+npm run build
+npm run start
+```
+
+## Como funciona a busca
+
+A aplicação executa o fluxo abaixo:
+
+- solicita o `challenge` e o `salt` da API externa
+- itera valores até encontrar o número correto com base em SHA-256
+- monta uma prova (`proof`) em base64 em formato JSON
+- envia a requisição POST para o endpoint de lookup
+- imprime a resposta da API
+
+## Observações importantes
+
+- Use apenas IDs ou contas que você tenha autorização para consultar.
+- Este projeto é um exemplo técnico e pode ser usado apenas dentro das regras da plataforma e da sua própria operação.
+- O token do bot deve ser mantido em segredo e nunca compartilhado publicamente.
+
+## Histórico
+
+Este repositório começou em Python e foi migrado para TypeScript para:
+
+- remover a dependência do runtime Python
+- melhorar a organização em módulos
+- facilitar manutenção e escalabilidade
+- padronizar o projeto para uso moderno em Node.js
+
+## Licença
+
+Sem licença definida no projeto.
