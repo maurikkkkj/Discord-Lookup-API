@@ -53,7 +53,7 @@ npm install
 Crie um arquivo `.env` na raiz do projeto com os seguintes valores:
 
 ```env
-DISCORD_ID=SEU_ID_DO_DISCORD
+DISCORD_ID=ID_DO_DISCORD_DA_PESSOA
 DISCORD_TOKEN=SEU_TOKEN_DO_BOT
 ```
 
